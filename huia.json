@@ -36,7 +36,7 @@
 				"link": "images/huia/avengers",
 				"img": "images/huia/main.jpg",
 				"size": 400,
-				"children": [{
+				"children": [{	
 						"hero": "Inbox",
 						"name": "",
 						"link": "images/huia/avengers",
@@ -48,7 +48,7 @@
 								"hero": "confirmation",
 								"name": "",
 								"link": "images/huia/avengers",
-								"img": "images/huia/confirmation.png",
+								"img": "images/huia/confirmation.jpg",
 								"size": 40,
 								"children": [
 
@@ -56,7 +56,7 @@
 										"hero": "customize",
 										"name": "",
 										"link": "images/huia/avengers",
-										"img": "images/huia/customize.png",
+										"img": "images/huia/customize.jpg",
 										"size": 40
 									}
 								]
