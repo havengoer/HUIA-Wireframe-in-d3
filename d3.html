@@ -24,33 +24,6 @@
 		</style>
 		    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
-		<script>
-			if (screen && screen.width > 768) {
-			document.write('<script type="text/javascript" src="js/jquery.fullPage.js"><\/script>');
-			console.log("Fullpage MODE ON");
-			}
-		</script>
-		<script type="text/javascript">
-			$(document).ready(function() {
-			$('#fullpage').fullpage({
-							anchors: ['FirstPagex', 'SecondPagex', 'ThirdPagex', 'FourthPagex', 'FifthPagex'],
-			css3: true,
-
-			fitToSection: false,
-			scrollOverflow: true,
-				navigation: true,
-				navigationPosition: 'right',
-			resetSliders: true,
-			scrollOverflowOptions: {
-			mouseWheel: true,
-			hideScrollbars: false,
-			fadeScrollbars: false,
-			disableMouse: true,
-			}
-
-			});
-			});
-		</script>
 <style>
       @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600);
       body {font-family: "Source Code Pro", Consolas, monaco, monospace; line-height: 160%; font-size: 16px;  margin: 0; }
@@ -92,79 +65,6 @@
 			<div class="section" col-lg-12 col-md-12 col-sm-12 " id="slide0a">
 				<div class="align-items-center">
 
-<script>
-// ************** Generate the tree diagram	 *****************
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
-	width = 960 - margin.right - margin.left,
-	height = 500 - margin.top - margin.bottom;
-
-var i = 0;
-
-var tree = d3.layout.tree()
-	.size([height, width]);
-
-var diagonal = d3.svg.diagonal()
-	.projection(function(d) { return [d.y, d.x]; });
-
-var svg = d3.select("body").append("svg")
-	.attr("width", width + margin.right + margin.left)
-	.attr("height", height + margin.top + margin.bottom)
-  .append("g")
-	.attr("transform",
-	      "translate(" + margin.left + "," + margin.top + ")");
-
-root = treeData[0];
-
-update(root);
-
-function update(source) {
-
-  // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse(),
-	  links = tree.links(nodes);
-
-  // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
-
-  // Declare the nodes…
-  var node = svg.selectAll("g.node")
-	  .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-  // Enter the nodes.
-  var nodeEnter = node.enter().append("g")
-	  .attr("class", "node")
-	  .attr("transform", function(d) {
-		  return "translate(" + d.y + "," + d.x + ")"; });
-
-  nodeEnter.append("image")
-      .attr("xlink:href", function(d) { return d.icon; })
-      .attr("x", "-12px")
-      .attr("y", "-12px")
-      .attr("width", "10px")
-      .attr("height", "10px");
-
-  nodeEnter.append("text")
-	  .attr("x", function(d) {
-		  return d.children || d._children ?
-		  (15) * -1 : + 15 })
-	  .attr("dy", ".35em")
-	  .attr("text-anchor", function(d) {
-		  return d.children || d._children ? "end" : "start"; })
-	  .text(function(d) { return d.name; })
-	  .style("fill-opacity", 1);
-
-  // Declare the links…
-  var link = svg.selectAll("path.link")
-	  .data(links, function(d) { return d.target.id; });
-
-  // Enter the links.
-  link.enter().insert("path", "g")
-	  .attr("class", "link")
-	  .style("stroke", function(d) { return d.target.level; })
-	  .attr("d", diagonal);
-
-}
-</script>
     <section id="vis"></section>
 
 
@@ -186,6 +86,24 @@ var vis;
 var force = d3.layout.force();
 
 vis = d3.select("#vis").append("svg").attr("width", w).attr("height", h);
+
+  // Append text
+	vis.append("svg:text")
+	.attr('x', 400)
+	.attr('y', 400)
+	.attr('width', 883	)
+	.attr('height', 745)
+	 .text("Project: ");
+
+  // Append logo
+
+	vis.append("svg:image")
+	.attr('x', 0)
+	.attr('y', 0)
+	.attr('width', 283	)
+	.attr('height', 145)
+	.attr("xlink:href", "images/huia/huia_logo.JPG");
+
 
 d3.json("huia.json", function(json) {
 
@@ -226,6 +144,7 @@ function update() {
     .on("tick", tick)
         .start();
 
+
    var path = vis.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
 
@@ -241,6 +160,8 @@ function update() {
 
 
   // Update the nodes…
+
+
   var node = vis.selectAll("g.node")
       .data(nodes, function(d) { return d.id; });
 
@@ -258,12 +179,14 @@ function update() {
       .style("fill", "black");
 
 
+
   // Append images
   var images = nodeEnter.append("svg:image")
         .attr("xlink:href",  function(d) { return d.img;})
         .attr("x", function(d) { return -25;})
         .attr("y", function(d) { return -25;})
         .attr("height", 70)
+        .attr("z-index", 1)
         .attr("width", 70);
 
   // make the image grow a little on mouse over and add the text details on click
@@ -274,14 +197,16 @@ function update() {
               d3.select("h2").html(d.name);
               d3.select("h3").html ("Take me to " + "<a href='" + d.link + "' >"  + d.hero + " web page ?"+ "</a>" );
            })
-
+//Makes image bigger
           .on( 'mouseenter', function() {
             // select element in current context
             d3.select( this )
+              .attr("class", "bringfront")
               .transition()
               .attr("x", function(d) { return -60;})
               .attr("y", function(d) { return -60;})
               .attr("height", 500)
+              .attr("z-index", 10)
               .attr("width", 500);
           })
           // set back
